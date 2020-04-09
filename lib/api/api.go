@@ -241,12 +241,13 @@ func (s *service) serve(ctx context.Context) {
 
 	s.cfg.Subscribe(s)
 	defer s.cfg.Unsubscribe(s)
-
+	
 	// The GET handlers
 	getRestMux := http.NewServeMux()
 	getRestMux.HandleFunc("/rest/db/completion", s.getDBCompletion)              // device folder
 	getRestMux.HandleFunc("/rest/db/file", s.getDBFile)                          // folder file
 	getRestMux.HandleFunc("/rest/db/ignores", s.getDBIgnores)                    // folder
+	getRestMux.HandleFunc("/rest/db/ignoresunparse", s.getDBIgnoresWithoutParse) // folder
 	getRestMux.HandleFunc("/rest/db/need", s.getDBNeed)                          // folder [perpage] [page]
 	getRestMux.HandleFunc("/rest/db/remoteneed", s.getDBRemoteNeed)              // device folder [perpage] [page]
 	getRestMux.HandleFunc("/rest/db/localchanged", s.getDBLocalChanged)          // folder
@@ -1171,6 +1172,20 @@ func (s *service) getDBIgnores(w http.ResponseWriter, r *http.Request) {
 		"ignore":   ignores,
 		"expanded": patterns,
 	})
+}
+
+func (s *service) getDBIgnoresWithoutParse(w http.ResponseWriter, r *http.Request) {
+	qs := r.URL.Query()
+
+	folder := qs.Get("folder")
+
+	ignores, patterns, err := s.model.GetIgnores(folder)
+
+	sendJSON(w, map[string][]string{
+		"ignore":   ignores,
+		"expanded": patterns,
+	})
+	fmt.Println("Ignore ",ignores, "Patterns ",patterns,"Error ",err)
 }
 
 func (s *service) postDBIgnores(w http.ResponseWriter, r *http.Request) {

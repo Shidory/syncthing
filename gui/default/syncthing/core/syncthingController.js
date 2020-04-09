@@ -1767,6 +1767,13 @@ angular.module('syncthing.core')
                     $('#folder-ignores textarea').removeAttr('disabled');
                 })
                 .error(function (err) {
+                    $http.get(urlbase + '/db/ignoresunparse?folder=' + encodeURIComponent($scope.currentFolder.id)) 
+                        .success(function (data) {
+                            console.log("Dans la méthode success de error"+ data.ignore);
+                    })
+                    .error(function (err) {
+                        console.log("Dans la méthode success de error de error"+ err);
+                    });
                     $('#folder-ignores textarea').val($translate.instant("Failed to load ignore patterns."));
                     $('#folder-ignores textarea').removeAttr('disabled');
                     $scope.emitHTTPError(err);
