@@ -1702,7 +1702,7 @@ func (m *model) GetIgnores(folder string) ([]string, []string, error) {
 	}
 
 	if err := ignores.Load(".stignore"); err != nil && !fs.IsNotExist(err) {
-		return nil, nil, err
+		return ignores.Lines(), nil, err
 	}
 
 	return ignores.Lines(), ignores.Patterns(), nil

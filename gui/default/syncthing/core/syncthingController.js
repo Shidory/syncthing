@@ -1763,6 +1763,7 @@ angular.module('syncthing.core')
             $http.get(urlbase + '/db/ignores?folder=' + encodeURIComponent($scope.currentFolder.id))
                 .success(function (data) {
                     $scope.currentFolder.ignores = data.ignore || [];
+                    $scope.currentFolder.error = data.err;
                     $('#folder-ignores textarea').val($scope.currentFolder.ignores.join('\n'));
                     $('#folder-ignores textarea').removeAttr('disabled');
                 })

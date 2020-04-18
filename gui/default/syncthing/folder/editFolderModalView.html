@@ -142,9 +142,10 @@
             </p>
           </div>
         </div>
-        <div id="folder-ignores" class="tab-pane">
+        <div id="folder-ignores" class="tab-pane" ng-class="{'has-error': currentFolder.error}">
           <p translate>Enter ignore patterns, one per line.</p>
           <textarea class="form-control" rows="5"></textarea>
+          <span translate ng-if="currentFolder.error">Please, enter correct ignore patterns</span>
           <hr />
           <p class="small"><span translate>Quick guide to supported patterns</span> (<a href="https://docs.syncthing.net/users/ignoring.html" target="_blank" translate>full documentation</a>):</p>
           <dl class="dl-horizontal dl-narrow small">

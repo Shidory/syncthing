@@ -1164,7 +1164,11 @@ func (s *service) getDBIgnores(w http.ResponseWriter, r *http.Request) {
 
 	ignores, patterns, err := s.model.GetIgnores(folder)
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		error := []string{err.Error()}
+		sendJSON(w, map[string][]string{
+			"ignore":   ignores,
+			"err": error,
+    	})
 		return
 	}
 
@@ -1172,20 +1176,6 @@ func (s *service) getDBIgnores(w http.ResponseWriter, r *http.Request) {
 		"ignore":   ignores,
 		"expanded": patterns,
 	})
-}
-
-func (s *service) getDBIgnoresWithoutParse(w http.ResponseWriter, r *http.Request) {
-	qs := r.URL.Query()
-
-	folder := qs.Get("folder")
-
-	ignores, patterns, err := s.model.GetIgnores(folder)
-
-	sendJSON(w, map[string][]string{
-		"ignore":   ignores,
-		"expanded": patterns,
-	})
-	fmt.Println("Ignore ",ignores, "Patterns ",patterns,"Error ",err)
 }
 
 func (s *service) postDBIgnores(w http.ResponseWriter, r *http.Request) {

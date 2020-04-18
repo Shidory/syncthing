@@ -540,7 +540,7 @@ func parseIgnoreFile(fs fs.Filesystem, fd io.Reader, currentFile string, cd Chan
 			}
 		}
 		if err != nil {
-			return nil, nil, err
+			return lines, nil, err
 		}
 	}
 
